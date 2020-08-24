@@ -1,7 +1,9 @@
-import { quotes } from './quotes';
 const Twit = require("twit");
-const nodeSChedule = require('node-schedule')
+const scheduleJob = require('node-schedule')
+const app = require('express')();
 require('dotenv').config();
+
+import { quotes } from './quotes';
 
 const T = new Twit({
   consumer_key: process.env.CONSUMER_KEY,
@@ -14,7 +16,12 @@ const T = new Twit({
 
 let quoteCount = 0;
 
-const dailySchedule = nodeSChedule.scheduleJob('0 59 23', () => {
+const rule = new scheduleJob.RecurrenceRule();
+
+rule.hour = 9;
+rule.minute = 22;
+
+const dailySchedule = scheduleJob.scheduleJob(rule, () => {
   if (quoteCount > quotes.length - 1) {
     process.exit()
   }
@@ -31,3 +38,6 @@ const dailySchedule = nodeSChedule.scheduleJob('0 59 23', () => {
     }
   })
 });
+
+
+app.listen(3000,console.log('listening on 3000'))
