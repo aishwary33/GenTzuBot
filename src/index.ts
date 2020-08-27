@@ -18,7 +18,9 @@ let quoteCount = 0;
 
 const rule = new scheduleJob.RecurrenceRule();
 
-rule.minute = 1;
+rule.dayOfWeek = [0];
+rule.hour = 17;
+rule.minute = 0;
 
 const dailySchedule = scheduleJob.scheduleJob(rule, () => {
   if (quoteCount > quotes.length - 1) {
